@@ -1,0 +1,47 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: msg-consumer
+  data:
+    cassandra:
+      contact-points: 127.0.0.1
+      cluster-name: Test Cluster
+      port: 9042
+      username: cassandra
+      password: cassandra
+      keyspace-name: myCas
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+          configuration:
+            fetch.max.wait.ms: 10000
+            fetch.min.bytes: 1024
+            max.poll.records: 100
+      bindings:
+        input:
+          destination: hello
+          content-type: application/json
+          #          group: demo01-consumer-group
+          consumer:
+            batch-mode: true
+logging:
+  level:
+    com.alibaba.nacos: error
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
